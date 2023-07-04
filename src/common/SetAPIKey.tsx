@@ -8,6 +8,7 @@ const ModelDropdown = () => {
   }));
 
   const [openAIKey, setOpenAIKey] = React.useState('');
+  const [openAIBase, setOpenAIBase] = React.useState<string | undefined>(undefined);
   const [showPassword, setShowPassword] = React.useState(false);
 
   return (
@@ -42,13 +43,19 @@ const ModelDropdown = () => {
           {showPassword ? 'Hide' : 'Show'}
         </Button>
       </HStack>
+      <Input
+          placeholder="OpenAI API Base URL (leave empty to use default URL)"
+          value={openAIBase}
+          onChange={(event) => setOpenAIBase(event.target.value)}
+          type='text'
+        />
       <Button
-        onClick={() => updateSettings({ openAIKey })}
+        onClick={() => updateSettings({ openAIKey, openAIBase })}
         w="full"
         disabled={!openAIKey}
         colorScheme="blue"
       >
-        Save Key
+        Save
       </Button>
     </VStack>
   );

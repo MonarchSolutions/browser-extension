@@ -42,6 +42,8 @@ export async function determineNextAction(
   const model = useAppState.getState().settings.selectedModel;
   const prompt = formatPrompt(taskInstructions, previousActions, simplifiedDOM);
   const key = useAppState.getState().settings.openAIKey;
+  const openAIBase = useAppState.getState().settings.openAIBase;
+
   if (!key) {
     notifyError?.('No OpenAI key found');
     return null;
@@ -50,6 +52,7 @@ export async function determineNextAction(
   const openai = new OpenAIApi(
     new Configuration({
       apiKey: key,
+      basePath: openAIBase === '' ? undefined : openAIBase
     })
   );
 
@@ -64,7 +67,7 @@ export async function determineNextAction(
           },
           { role: 'user', content: prompt },
         ],
-        max_tokens: 500,
+        max_tokens: 8000,
         temperature: 0,
         stop: ['</Action>'],
       });
